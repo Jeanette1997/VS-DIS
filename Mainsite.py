@@ -1,183 +1,127 @@
-from flask import Flask, render_template, request, jsonify
-from datetime import datetime
+import sqlite3
+from flask import Flask, render_template, request, g
+import os
 
 app = Flask(__name__)
 
-# Sample data - i virkeligheden ville dette komme fra en database
-EVENTS_DATA = [
-    {
-        'id': 1,
-        'title': 'Mew - Triumf Tour',
-        'artist': 'Mew',
-        'date': '2025-06-15',
-        'time': '20:00',
-        'venue': 'Vega, København',
-        'price_from': 450,
-        'category': 'Rock',
-        'image_icon': '🎸',
-        'description': 'Danmarks mest elskede indie rock band er tilbage med en triumferende tour'
-    },
-    {
-        'id': 2,
-        'title': 'Roskilde Festival 2025',
-        'artist': 'Forskellige kunstnere',
-        'date': '2025-06-28',
-        'time': '12:00',
-        'venue': 'Roskilde',
-        'price_from': 2100,
-        'category': 'Festival',
-        'image_icon': '🎤',
-        'description': 'Nordeuropas største musikfestival med internationale stjerner'
-    },
-    {
-        'id': 3,
-        'title': 'Copenhagen Jazz Festival',
-        'artist': 'Forskellige kunstnere',
-        'date': '2025-07-04',
-        'time': '19:00',
-        'venue': 'Forskellige venues',
-        'price_from': 200,
-        'category': 'Jazz',
-        'image_icon': '🎹',
-        'description': 'Ti dage med jazz i hele København'
-    },
-    {
-        'id': 4,
-        'title': 'Lukas Graham - Comeback',
-        'artist': 'Lukas Graham',
-        'date': '2025-08-22',
-        'time': '20:00',
-        'venue': 'Royal Arena, København',
-        'price_from': 395,
-        'category': 'Pop',
-        'image_icon': '🎵',
-        'description': 'Lukas Graham vender tilbage med nye sange og klassikere'
-    },
-    {
-        'id': 5,
-        'title': 'Distortion Festival',
-        'artist': 'Electronic Artists',
-        'date': '2025-06-01',
-        'time': '14:00',
-        'venue': 'København',
-        'price_from': 0,
-        'category': 'Electronic',
-        'image_icon': '🎧',
-        'description': 'Gratis gademusik festival i Københavns gader'
-    },
-    {
-        'id': 6,
-        'title': 'DR Koncerthuset - Klassisk Aften',
-        'artist': 'DR Symfoniorkesteret',
-        'date': '2025-07-15',
-        'time': '19:30',
-        'venue': 'DR Koncerthuset',
-        'price_from': 150,
-        'category': 'Klassisk',
-        'image_icon': '🎻',
-        'description': 'En aften med klassisk musik i smukke omgivelser'
-    }
-]
+# Database sti
+DATABASE = 'music_events.db'
 
-CATEGORIES = [
-    {'name': 'Rock & Metal', 'icon': '🎸', 'slug': 'rock'},
-    {'name': 'Pop & Chart', 'icon': '🎤', 'slug': 'pop'},
-    {'name': 'Jazz & Blues', 'icon': '🎷', 'slug': 'jazz'},
-    {'name': 'Electronic', 'icon': '🎧', 'slug': 'electronic'},
-    {'name': 'Klassisk', 'icon': '🎻', 'slug': 'klassisk'},
-    {'name': 'Festivaler', 'icon': '🎪', 'slug': 'festival'}
-]
+def get_db():
+    """Få database forbindelse"""
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row  # Gør at vi kan bruge kolonnenavne
+    return db
+
+@app.teardown_appcontext
+def close_connection(exception):
+    """Luk database forbindelse"""
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    """Opret database og indsæt test data"""
+    if not os.path.exists(DATABASE):
+        print("Opretter database...")
+        db = sqlite3.connect(DATABASE)
+        
+        # Opret tabel
+        db.execute('''
+            CREATE TABLE events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                artist TEXT NOT NULL,
+                date TEXT NOT NULL,
+                venue TEXT NOT NULL,
+                price INTEGER NOT NULL,
+                category TEXT NOT NULL
+            )
+        ''')
+        
+        # Indsæt test data
+        events_data = [
+            ('Mew - Triumf Tour', 'Mew', '2025-06-15', 'Vega, København', 450, 'Rock'),
+            ('Roskilde Festival 2025', 'Forskellige kunstnere', '2025-06-28', 'Roskilde', 2100, 'Festival'),
+            ('Copenhagen Jazz Festival', 'Jazz kunstnere', '2025-07-04', 'Forskellige venues', 200, 'Jazz'),
+            ('Lukas Graham - Comeback', 'Lukas Graham', '2025-08-22', 'Royal Arena', 395, 'Pop'),
+            ('Distortion Festival', 'Electronic Artists', '2025-06-01', 'København', 0, 'Electronic'),
+            ('Volbeat - European Tour', 'Volbeat', '2025-07-10', 'Parken, København', 650, 'Rock'),
+            ('Trentemøller Live', 'Trentemøller', '2025-05-15', 'Vega, København', 350, 'Electronic'),
+            ('Agnes Obel Concert', 'Agnes Obel', '2025-09-05', 'DR Koncerthuset', 400, 'Alternative'),
+            ('Medina - Comeback Tour', 'Medina', '2025-06-20', 'Forum, København', 375, 'Pop'),
+            ('Copenhagen Opera Gala', 'Operasangere', '2025-08-15', 'Operaen', 500, 'Klassisk')
+        ]
+        
+        db.executemany('''
+            INSERT INTO events (title, artist, date, venue, price, category)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', events_data)
+        
+        db.commit()
+        db.close()
+        print("Database oprettet med test data!")
+
+def get_all_events():
+    """Hent alle events fra database"""
+    db = get_db()
+    events = db.execute('SELECT * FROM events ORDER BY date').fetchall()
+    return events
+
+def search_events(query):
+    """Søg efter events"""
+    db = get_db()
+    search_term = f'%{query}%'
+    events = db.execute('''
+        SELECT * FROM events 
+        WHERE title LIKE ? OR artist LIKE ? OR venue LIKE ? OR category LIKE ?
+        ORDER BY date
+    ''', (search_term, search_term, search_term, search_term)).fetchall()
+    return events
 
 @app.route('/')
 def index():
-    """Startside med alle events"""
-    return render_template('index.html', 
-                         events=EVENTS_DATA, 
-                         categories=CATEGORIES,
-                         page_title="Find dine drømme koncerter")
-
-@app.route('/search')
-def search():
-    """Søgefunktion for events"""
-    query = request.args.get('q', '').lower()
-    category = request.args.get('category', '').lower()
+    """Forside - vis alle events eller søgeresultater"""
+    query = request.args.get('search', '').strip()
     
-    filtered_events = EVENTS_DATA
-    
-    # Filtrer efter søgeord
     if query:
-        filtered_events = [
-            event for event in filtered_events 
-            if query in event['title'].lower() or 
-               query in event['artist'].lower() or 
-               query in event['venue'].lower()
-        ]
+        events = search_events(query)
+        message = f'Søgeresultater for "{query}" ({len(events)} events fundet)'
+    else:
+        events = get_all_events()
+        message = f'Alle kommende events ({len(events)} events)'
     
-    # Filtrer efter kategori
-    if category:
-        filtered_events = [
-            event for event in filtered_events 
-            if event['category'].lower() == category
-        ]
-    
-    return render_template('search_results.html', 
-                         events=filtered_events, 
-                         query=query,
-                         category=category,
-                         categories=CATEGORIES)
+    return render_template('index.html', events=events, query=query, message=message)
 
-@app.route('/event/<int:event_id>')
-def event_detail(event_id):
-    """Detaljeside for et specifikt event"""
-    event = next((e for e in EVENTS_DATA if e['id'] == event_id), None)
-    if not event:
-        return "Event ikke fundet", 404
-    
-    return render_template('event_detail.html', event=event)
-
-@app.route('/category/<category_slug>')
-def category_events(category_slug):
-    """Vis events for en specifik kategori"""
-    category_events = [
-        event for event in EVENTS_DATA 
-        if event['category'].lower() == category_slug.lower()
-    ]
-    
-    category_name = next(
-        (cat['name'] for cat in CATEGORIES if cat['slug'] == category_slug), 
-        category_slug.title()
-    )
-    
-    return render_template('category.html', 
-                         events=category_events,
-                         category_name=category_name,
-                         categories=CATEGORIES)
-
-@app.route('/api/events')
-def api_events():
-    """API endpoint for at hente events (til AJAX)"""
-    return jsonify(EVENTS_DATA)
+@app.template_filter('format_price')
+def format_price(price):
+    """Formatér pris"""
+    if price == 0:
+        return "Gratis"
+    return f"{price} kr"
 
 @app.template_filter('format_date')
 def format_date(date_string):
-    """Custom filter til at formatere datoer på dansk"""
+    """Formatér dato til dansk"""
     try:
+        from datetime import datetime
         date_obj = datetime.strptime(date_string, '%Y-%m-%d')
         months = {
-            1: 'januar', 2: 'februar', 3: 'marts', 4: 'april',
-            5: 'maj', 6: 'juni', 7: 'juli', 8: 'august',
-            9: 'september', 10: 'oktober', 11: 'november', 12: 'december'
+            1: 'jan', 2: 'feb', 3: 'mar', 4: 'apr',
+            5: 'maj', 6: 'jun', 7: 'jul', 8: 'aug',
+            9: 'sep', 10: 'okt', 11: 'nov', 12: 'dec'
         }
         return f"{date_obj.day}. {months[date_obj.month]} {date_obj.year}"
     except:
         return date_string
 
-@app.template_filter('format_price')
-def format_price(price):
-    """Custom filter til at formatere priser"""
-    if price == 0:
-        return "Gratis"
-    return f"{price:,} kr".replace(',', '.')
-
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    # Opret database hvis den ikke findes
+    init_db()
+    
+    # Start Flask app
+    print("Starter Flask app...")
+    print("Åbn http://127.0.0.1:5000 i din browser")
+    app.run(debug=True)
