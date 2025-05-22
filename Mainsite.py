@@ -82,9 +82,11 @@ def search_events(query):
     return events
 
 @app.route('/')
-def index():
+def homepage():
     """Forside - vis alle events eller søgeresultater"""
     query = request.args.get('search', '').strip()
+    
+    print(f"Søgeord: '{query}'")  # Debug print
     
     if query:
         events = search_events(query)
@@ -93,7 +95,10 @@ def index():
         events = get_all_events()
         message = f'Alle kommende events ({len(events)} events)'
     
-    return render_template('index.html', events=events, query=query, message=message)
+    print(f"Antal events: {len(events)}")  # Debug print
+    print(f"Template variabler: query='{query}', message='{message}'")  # Debug print
+    
+    return render_template('Homepage.html', events=events, query=query, message=message)
 
 @app.template_filter('format_price')
 def format_price(price):
@@ -123,5 +128,5 @@ if __name__ == '__main__':
     
     # Start Flask app
     print("Starter Flask app...")
-    print("Åbn http://127.0.0.1:5000 i din browser")
+    print("Åbn http://127.0.0.1:5500 i din browser")
     app.run(debug=True)
