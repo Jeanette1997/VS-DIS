@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MusicEvents - Musik Event Billetter</title>
     <link rel="stylesheet" href="Homepagedesign.css">
-
 </head>
 <body>
     <div class="container">
@@ -22,18 +21,20 @@
                        name="search" 
                        class="search-input" 
                        placeholder="Søg efter kunstner, event, venue eller kategori..." 
-                       value="{{ query }}">
+                       value="{% if query %}{{ query }}{% endif %}">
                 <button type="submit" class="search-btn">🔍 Søg</button>
                 {% if query %}
-                <a href="{{ url_for('index') }}" class="clear-btn">✕ Ryd</a>
+                <a href="/" class="clear-btn">✕ Ryd</a>
                 {% endif %}
             </form>
         </div>
 
         <!-- Besked med antal resultater -->
+        {% if message %}
         <div class="message">
             {{ message }}
         </div>
+        {% endif %}
 
         <!-- Events -->
         {% if events %}
@@ -58,7 +59,7 @@
         {% else %}
         <div class="no-results">
             <h2>😔 Ingen events fundet</h2>
-            <p>Prøv at søge efter noget andet eller <a href="{{ url_for('index') }}" style="color: #ffd700;">se alle events</a></p>
+            <p>Prøv at søge efter noget andet eller <a href="/" style="color: #ffd700;">se alle events</a></p>
         </div>
         {% endif %}
 
@@ -81,7 +82,7 @@
             // Ryd søgefelt med Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && searchInput.value) {
-                    window.location.href = '{{ url_for("index") }}';
+                    window.location.href = '/';
                 }
             });
         });
