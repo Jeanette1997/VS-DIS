@@ -3,169 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MusicEvents - Find dine koncert billetter</title>
+    <title>MusicEvents - Musik Event Billetter</title>
+    <link rel="stylesheet" href="Homepagedesign.css">
+
 </head>
 <body>
-  <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">🎵 MusicEvents</div>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="#hjem">Hjem</a></li>
-                        <li><a href="#events">Events</a></li>
-                        <li><a href="#kategorier">Kategorier</a></li>
-                        <li><a href="#kontakt">Kontakt</a></li>
-                        <li><a href="#login">Log ind</a></li>
-                    </ul>
-                </nav>
-            </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎵 MusicEvents</h1>
+            <p>Find dine favoritkonkurrence i Danmark</p>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Find dine drømme koncerter</h1>
-            <p>Oplev de bedste musikevents i Danmark - fra intimme koncerter til store festivaler</p>
-            
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="Søg efter kunstner, venue eller event...">
-                <button class="search-btn">Søg Billetter</button>
-            </div>
-
-            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <button style="padding: 10px 20px; background: transparent; border: 2px solid white; color: white; border-radius: 25px; cursor: pointer;">Rock</button>
-                <button style="padding: 10px 20px; background: transparent; border: 2px solid white; color: white; border-radius: 25px; cursor: pointer;">Pop</button>
-                <button style="padding: 10px 20px; background: transparent; border: 2px solid white; color: white; border-radius: 25px; cursor: pointer;">Jazz</button>
-                <button style="padding: 10px 20px; background: transparent; border: 2px solid white; color: white; border-radius: 25px; cursor: pointer;">Electronic</button>
-            </div>
+        <!-- Søgebox -->
+        <div class="search-container">
+            <form class="search-form" method="GET">
+                <input type="text" 
+                       name="search" 
+                       class="search-input" 
+                       placeholder="Søg efter kunstner, event, venue eller kategori..." 
+                       value="{{ query }}">
+                <button type="submit" class="search-btn">🔍 Søg</button>
+                {% if query %}
+                <a href="{{ url_for('index') }}" class="clear-btn">✕ Ryd</a>
+                {% endif %}
+            </form>
         </div>
-    </section>
 
-    <!-- Featured Events -->
-    <section class="featured">
-        <div class="container">
-            <h2 class="section-title">Populære Events</h2>
-            <div class="events-grid">
-                <div class="event-card">
-                    <div class="event-image">🎸</div>
-                    <div class="event-info">
-                        <h3 class="event-title">Mew - Triumf Tour</h3>
-                        <div class="event-date">15. Juni 2025</div>
-                        <div class="event-venue">Vega, København</div>
-                        <div class="event-price">Fra 450 kr</div>
-                    </div>
+        <!-- Besked med antal resultater -->
+        <div class="message">
+            {{ message }}
+        </div>
+
+        <!-- Events -->
+        {% if events %}
+        <div class="events-grid">
+            {% for event in events %}
+            <div class="event-card">
+                <div class="event-title">{{ event.title }}</div>
+                <div class="event-artist">{{ event.artist }}</div>
+                
+                <div class="event-details">
+                    <div>📅 {{ event.date | format_date }}</div>
+                    <div>📍 {{ event.venue }}</div>
                 </div>
-
-                <div class="event-card">
-                    <div class="event-image">🎤</div>
-                    <div class="event-info">
-                        <h3 class="event-title">Roskilde Festival 2025</h3>
-                        <div class="event-date">28. Juni - 5. Juli</div>
-                        <div class="event-venue">Roskilde</div>
-                        <div class="event-price">Fra 2.100 kr</div>
-                    </div>
-                </div>
-
-                <div class="event-card">
-                    <div class="event-image">🎹</div>
-                    <div class="event-info">
-                        <h3 class="event-title">Copenhagen Jazz Festival</h3>
-                        <div class="event-date">4-13. Juli 2025</div>
-                        <div class="event-venue">Forskellige venues</div>
-                        <div class="event-price">Fra 200 kr</div>
-                    </div>
-                </div>
-
-                <div class="event-card">
-                    <div class="event-image">🎵</div>
-                    <div class="event-info">
-                        <h3 class="event-title">Lukas Graham - Comeback</h3>
-                        <div class="event-date">22. August 2025</div>
-                        <div class="event-venue">Royal Arena, København</div>
-                        <div class="event-price">Fra 395 kr</div>
-                    </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="event-category">{{ event.category }}</span>
+                    <div class="event-price">{{ event.price | format_price }}</div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-    </section>
+        {% else %}
+        <div class="no-results">
+            <h2>😔 Ingen events fundet</h2>
+            <p>Prøv at søge efter noget andet eller <a href="{{ url_for('index') }}" style="color: #ffd700;">se alle events</a></p>
+        </div>
+        {% endif %}
 
-    <!-- Categories -->
-    <section class="categories">
-        <div class="container">
-            <h2 class="section-title">Udforsk Kategorier</h2>
-            <div class="category-grid">
-                <div class="category-card">
-                    <div class="category-icon">🎸</div>
-                    <div class="category-name">Rock & Metal</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">🎤</div>
-                    <div class="category-name">Pop & Chart</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">🎷</div>
-                    <div class="category-name">Jazz & Blues</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">🎧</div>
-                    <div class="category-name">Electronic</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">🎻</div>
-                    <div class="category-name">Klassisk</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">🎪</div>
-                    <div class="category-name">Festivaler</div>
-                </div>
-            </div>
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); opacity: 0.7;">
+            <p>&copy; 2025 MusicEvents | Lavet med Flask og Python</p>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 MusicEvents. Alle rettigheder forbeholdes.</p>
-            <p>Kontakt os: info@musicevents.dk | Tlf: +45 12 34 56 78</p>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Simple interaktivitet
+        // Simpel JavaScript til at fokusere på søgefeltet
         document.addEventListener('DOMContentLoaded', function() {
-            // Søgefunktion
-            const searchBtn = document.querySelector('.search-btn');
             const searchInput = document.querySelector('.search-input');
             
-            searchBtn.addEventListener('click', function() {
-                const searchTerm = searchInput.value;
-                if (searchTerm) {
-                    alert(`Søger efter: "${searchTerm}"`);
-                    // Her ville du implementere faktisk søgefunktionalitet
+            // Fokuser på søgefelt hvis der ikke er nogen søgeterm
+            if (!searchInput.value) {
+                searchInput.focus();
+            }
+            
+            // Ryd søgefelt med Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && searchInput.value) {
+                    window.location.href = '{{ url_for("index") }}';
                 }
-            });
-
-            // Event cards hover effekt
-            const eventCards = document.querySelectorAll('.event-card');
-            eventCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const title = card.querySelector('.event-title').textContent;
-                    alert(`Viser detaljer for: ${title}`);
-                    // Her ville du navigere til event detaljer
-                });
-            });
-
-            // Kategori kort klik
-            const categoryCards = document.querySelectorAll('.category-card');
-            categoryCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const category = card.querySelector('.category-name').textContent;
-                    alert(`Viser ${category} events`);
-                    // Her ville du filtrere events efter kategori
-                });
             });
         });
     </script>
