@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicEvents - Musik Event Billetter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Søgebox */
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: #ffd700;
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #ffed4e;
+        }
+
+        .clear-btn {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .clear-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Besked */
+        .message {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Events grid */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .event-artist {
+            font-size: 1rem;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .event-details {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .event-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: right;
+        }
+
+        .event-category {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        /* Ingen resultater */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .no-results h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .no-results p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-input, .search-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎵 MusicEvents</h1>
+            <p>Find dine favoritkonkurrence i Danmark</p>
+        </div>
+
+        <!-- Søgebox -->
+        <div class="search-container">
+            <form class="search-form" method="GET">
+                <input type="text" 
+                       name="search" 
+                       class="search-input" 
+                       placeholder="Søg efter kunstner, event, venue eller kategori..." 
+                       value="{% if query %}{{ query }}{% endif %}">
+                <button type="submit" class="search-btn">🔍 Søg</button>
+                {% if query %}
+                <a href="/" class="clear-btn">✕ Ryd</a>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Besked med antal resultater -->
+        {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <!-- Events -->
+        {% if events %}
+        <div class="events-grid">
+            {% for event in events %}
+            <div class="event-card">
+                <div class="event-title">{{ event.title }}</div>
+                <div class="event-artist">{{ event.artist }}</div>
+                
+                <div class="event-details">
+                    <div>📅 {{ event.date | format_date }}</div>
+                    <div>📍 {{ event.venue }}</div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="event-category">{{ event.category }}</span>
+                    <div class="event-price">{{ event.price | format_price }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results">
+            <h2>😔 Ingen events fundet</h2>
+            <p>Prøv at søge efter noget andet eller <a href="/" style="color: #ffd700;">se alle events</a></p>
+        </div>
+        {% endif %}
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); opacity: 0.7;">
+            <p>&copy; 2025 MusicEvents | Lavet med Flask og Python</p>
+        </div>
+    </div>
+
+    <script>
+        // Simpel JavaScript til at fokusere på søgefeltet
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-input');
+            
+            // Fokuser på søgefelt hvis der ikke er nogen søgeterm
+            if (!searchInput.value) {
+                searchInput.focus();
+            }
+            
+            // Ryd søgefelt med Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && searchInput.value) {
+                    window.location.href = '/';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

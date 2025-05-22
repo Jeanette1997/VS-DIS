@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask, render_template, request, g
 import os
 
+
 app = Flask(__name__)
 
 # Database sti
@@ -82,7 +83,7 @@ def search_events(query):
     return events
 
 @app.route('/')
-def homepage():
+def index():
     """Forside - vis alle events eller søgeresultater"""
     query = request.args.get('search', '').strip()
     
@@ -98,7 +99,7 @@ def homepage():
     print(f"Antal events: {len(events)}")  # Debug print
     print(f"Template variabler: query='{query}', message='{message}'")  # Debug print
     
-    return render_template('Homepage.html', events=events, query=query, message=message)
+    return render_template('index.html', events=events, query=query, message=message)
 
 @app.template_filter('format_price')
 def format_price(price):
@@ -128,5 +129,5 @@ if __name__ == '__main__':
     
     # Start Flask app
     print("Starter Flask app...")
-    print("Åbn http://127.0.0.1:5500 i din browser")
+    print("Åbn http://127.0.0.1:5000 i din browser")
     app.run(debug=True)
