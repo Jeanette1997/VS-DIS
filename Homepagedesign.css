@@ -1,4 +1,4 @@
-        * {
+ * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -38,7 +38,6 @@
             font-size: 1.8rem;
             font-weight: bold;
             color: white;
-            text-decoration: none;
         }
 
         .nav-menu {
@@ -58,13 +57,26 @@
             color: #ffd700;
         }
 
-        /* Main content */
-        main {
+        /* Hero Section */
+        .hero {
             margin-top: 80px;
-            min-height: calc(100vh - 160px);
+            text-align: center;
+            padding: 100px 0;
+            color: white;
         }
 
-        /* Search box styling */
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
         .search-box {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -101,12 +113,23 @@
             background: #ffed4e;
         }
 
-        /* Event cards */
+        /* Featured Events */
+        .featured {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
         .events-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
         }
 
         .event-card {
@@ -116,8 +139,6 @@
             overflow: hidden;
             transition: transform 0.3s;
             cursor: pointer;
-            text-decoration: none;
-            color: inherit;
         }
 
         .event-card:hover {
@@ -161,19 +182,11 @@
             color: #ffd700;
         }
 
-        /* Section styling */
-        .section {
+        /* Categories */
+        .categories {
             padding: 80px 0;
         }
 
-        .section-title {
-            text-align: center;
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Category cards */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -189,7 +202,6 @@
             color: white;
             transition: all 0.3s;
             cursor: pointer;
-            text-decoration: none;
         }
 
         .category-card:hover {
@@ -205,7 +217,6 @@
         .category-name {
             font-size: 1.2rem;
             font-weight: bold;
-            color: white;
         }
 
         /* Footer */
@@ -216,23 +227,14 @@
             padding: 2rem 0;
         }
 
-        /* Alert messages */
-        .alert {
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .alert-info {
-            background: rgba(52, 152, 219, 0.8);
-            color: white;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
             }
 
             .search-box {
@@ -243,4 +245,3 @@
                 width: 100%;
             }
         }
-
