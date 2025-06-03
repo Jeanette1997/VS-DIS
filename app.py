@@ -101,6 +101,17 @@ def index():
     
     return render_template('index.html', events=events, query=query, message=message)
 
+@app.route('/newuser')
+def newuser():
+    """Opret ny bruger """
+    return render_template('newuser.html')
+
+@app.route('/login')
+def login():
+    """Opret ny bruger """
+    return render_template('login.html')
+
+
 @app.template_filter('format_price')
 def format_price(price):
     """Formatér pris"""
