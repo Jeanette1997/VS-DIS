@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tillykke du er nu oprettet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #3d8241 0%, #173b34 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Top buttons */
+        .top-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .top-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .top-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .add-user-btn {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+
+        .add-user-btn:hover {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 40px; /* Add space for fixed buttons */
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+
+            .top-buttons {
+                position: relative;
+                top: auto;
+                right: auto;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            .header {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top buttons -->
+    <div class="top-buttons">
+        <a href="/login" class="top-btn login-btn">🔐 Login</a>
+        <a href="/newuser" class="top-btn newuser-btn">👤 Add User</a>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Tillykke du er nu oprettet</h1>
+            <a href="/">Du kan nu finde biletter</a>
+        </div>
+
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); opacity: 0.7;">
+            <p>&copy; 2025 MusicEvents | Lavet med Flask og Python</p>
+        </div>
+    </div>
+
+
+</body>
+</html>

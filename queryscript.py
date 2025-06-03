@@ -1,7 +1,8 @@
 import psycopg2
 from psycopg2 import Error
 
-
+# PostgreSQL database connection parameters, I kan bare ændre disse til jeres egne
+# Husk at installere requirements.txt filen med pip install -r requirements.txt
 connection_params = {
     'host': 'localhost',
     'database': 'projecttest',  

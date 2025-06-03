@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, render_template, request, g
 import os
+import queryscript as qs
 
 
 app = Flask(__name__)
@@ -101,10 +102,23 @@ def index():
     
     return render_template('index.html', events=events, query=query, message=message)
 
-@app.route('/newuser')
+@app.route('/newuser', methods=['GET', 'POST'])
 def newuser():
-    """Opret ny bruger """
-    return render_template('newuser.html')
+
+    """Håndter formular for ny bruger"""
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    
+    if not name or not email or not phone:
+        return render_template('newuser.html', error='Alle felter skal udfyldes.')
+    
+    
+    # Her kan du tilføje logik for at gemme brugeren i databasen
+    print(f"Ny bruger oprettet: {name}, {email}, {phone}")
+    qs.add_user(name, email, phone)  
+    
+    return render_template('succes.html', success='Bruger oprettet!') 
 
 @app.route('/login')
 def login():
