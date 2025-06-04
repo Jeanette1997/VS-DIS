@@ -10,12 +10,16 @@ app = Flask(__name__)
 DATABASE = 'music_events.db'
 
 def get_db():
-    """Få database forbindelse"""
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        db.row_factory = sqlite3.Row  # Gør at vi kan bruge kolonnenavne
-    return db
+    """Få database forbindelse til PostgreSQL"""
+    if not hasattr(g, '_db'):
+        g._db = psycopg2.connect(
+            dbname="ticketing_db",
+            user="khalilmashinesh",
+            password="gruppe21",
+            host="localhost",
+            port="5432"
+        )
+    return g._db
 
 @app.teardown_appcontext
 def close_connection(exception):
