@@ -1,4 +1,4 @@
-import sqlite3
+import psycopg2
 from flask import Flask, render_template, request, g
 import os
 import queryscript as qs
