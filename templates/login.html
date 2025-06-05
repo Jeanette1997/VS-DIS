@@ -13,7 +13,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #3d8241 0%, #173b34 100%);
+            background: linear-gradient(135deg,rgb(45, 99, 208) 0%,rgb(4, 76, 144) 100%);
             min-height: 100vh;
             color: white;
             padding: 20px;
@@ -245,7 +245,7 @@
         <!-- Header -->
         <div class="header">
             <h1>🔐 Login</h1>
-            <p>Log ind med din email og telefonnummer</p>
+            <p>Log ind med din email og password</p>
         </div>
 
         <!-- Success/Error messages -->
@@ -258,7 +258,7 @@
         <!-- Login info -->
         <div class="login-info">
             <h3>🎵 Velkommen tilbage!</h3>
-            <p>Indtast din email og telefonnummer for at få adgang til din konto.</p>
+            <p>Indtast din email og password for at få adgang til din konto.</p>
         </div>
 
         <!-- Login container -->
@@ -276,13 +276,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone" class="form-label required">Telefonnummer</label>
-                    <input type="tel" 
-                           id="phone" 
-                           name="phone" 
+                    <label for="password" class="form-label required">password</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
                            class="form-input" 
-                           placeholder="+45 12 34 56 78"
-                           value="{% if form_data %}{{ form_data.phone }}{% endif %}"
+                           placeholder="******"
+                           value="{% if form_data %}{{ form_data.password }}{% endif %}"
                            required>
                 </div>
 
@@ -319,18 +319,7 @@
                 });
             });
 
-            // Phone number formatting (basic)
-            const phoneInput = document.getElementById('phone');
-            phoneInput.addEventListener('input', function() {
-                let value = this.value.replace(/\D/g, '');
-                if (value.length >= 8) {
-                    value = value.replace(/(\d{2})(\d{2})(\d{2})(\d{2})/, '$1 $2 $3 $4');
-                    if (value.length === 11 && !value.startsWith('+45')) {
-                        value = '+45 ' + value;
-                    }
-                }
-                this.value = value;
-            });
+
 
             // Form submission
             form.addEventListener('submit', function(e) {

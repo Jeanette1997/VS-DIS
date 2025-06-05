@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Events - Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg,rgb(100, 130, 200) 0%,rgb(38, 61, 79) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgb(143, 143, 143);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .header {
+            background: (135deg,rgb(45, 99, 208) 0%,rgb(4, 76, 144) 100%);
+            color: rgb(1, 69, 164);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .flash-messages {
+            margin-bottom: 30px;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .flash-success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .flash-error {
+            background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 1rem;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.15);
+            transform: scale(1.02);
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 50px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            box-shadow: 0 10px 30px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(220, 53, 69, 0.4);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+            transform: translateX(-5px);
+        }
+
+        .event-info {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #2196f3;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Edit Events</h1>
+            <p>You are logged in as an agent, you can edit events here</p>
+        </div>
+        
+        <div class="content">
+            <a href="/admin/users" class="back-link">← Tilbage til Admin Panel</a>
+            
+            <!-- Flash Messages -->
+            <div class="flash-messages">
+                <!-- Flask flash messages would go here -->
+            </div>
+            
+            <!-- Event Selection Form -->
+            <div class="form-section">
+                <h2 style="margin-bottom: 20px; color: #495057;">Vælg Event at Redigere</h2>
+                <form method="GET" action="/admin/edit-events">
+                    <div class="form-group">
+                        <label for="event_id">Vælg Event:</label>
+                        <select name="event_id" id="event_id" onchange="this.form.submit()">
+                            <option value="">-- Vælg et event --</option>
+                            <!-- Sample events - replace with actual data -->
+                            <option value="1">Roskilde Festival 2025 - Rock</option>
+                            <option value="2">Copenhagen Jazz Festival - Jazz</option>
+                            <option value="3">Smukfest 2025 - Pop</option>
+                            <option value="4">Heartland Festival - Indie</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Event Edit Form (shown when event is selected) -->
+            <div class="form-section" id="editForm" style="display: none;">
+                <h2 style="margin-bottom: 20px; color: #495057;">Rediger Event</h2>
+                <form method="POST" action="/admin/edit-events">
+                    <input type="hidden" name="event_id" id="hidden_event_id" value="">
+                    
+                    <div class="form-group">
+                        <label for="title">Event Titel:</label>
+                        <input type="text" name="title" id="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="artist">Kunstner/Performer:</label>
+                        <input type="text" name="artist" id="artist" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Dato:</label>
+                        <input type="date" name="date" id="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="venue">Venue/Sted:</label>
+                        <input type="text" name="venue" id="venue" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Kategori:</label>
+                        <select name="category" id="category" required>
+                            <option value="">-- Vælg kategori --</option>
+                            <option value="Rock">Rock</option>
+                            <option value="Pop">Pop</option>
+                            <option value="Jazz">Jazz</option>
+                            <option value="Electronic">Electronic</option>
+                            <option value="Classical">Classical</option>
+                            <option value="Hip-hop">Hip-hop</option>
+                            <option value="Folk">Folk</option>
+                            <option value="Indie">Indie</option>
+                            <option value="Metal">Metal</option>
+                            <option value="Country">Country</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="price">Pris (DKK):</label>
+                        <input type="number" name="price" id="price" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Beskrivelse:</label>
+                        <textarea name="description" id="description" placeholder="Skriv en beskrivelse af eventet..."></textarea>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" name="action" value="update" class="btn btn-primary">
+                            💾 Gem Ændringer
+                        </button>
+                        <button type="submit" name="action" value="delete" class="btn btn-danger" onclick="return confirm('Er du sikker på at du vil slette dette event? Dette kan ikke fortrydes.')">
+                            🗑️ Slet Event
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            🔄 Nulstil
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Current Event Info (shown when event is selected) -->
+            <div class="event-info" id="eventInfo" style="display: none;">
+                <h3 style="margin-bottom: 15px; color: #1976d2;">📊 Nuværende Event Information</h3>
+                <div id="currentEventData">
+                    <!-- Current event data will be populated here -->
+                </div>
+            </div>
+            
+            <!-- Loading indicator -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Indlæser event data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample event data - replace with actual data from your backend
+        const eventData = {
+            1: {
+                title: "Roskilde Festival 2025",
+                artist: "Various Artists",
+                date: "2025-07-01",
+                venue: "Roskilde Festival Ground",
+                category: "Rock",
+                price: 2500.00,
+                description: "Danmarks største musikfestival med internationale og nationale kunstnere."
+            },
+            2: {
+                title: "Copenhagen Jazz Festival",
+                artist: "Jazz Ensemble",
+                date: "2025-07-15",
+                venue: "Tivoli Concert Hall",
+                category: "Jazz",
+                price: 450.00,
+                description: "En uforglemmelig aften med autentisk jazz i hjertet af København."
+            },
+            3: {
+                title: "Smukfest 2025",
+                artist: "Pop Stars",
+                date: "2025-08-12",
+                venue: "Skanderborg",
+                category: "Pop",
+                price: 1800.00,
+                description: "Danmarks smukkeste festival i Bøgeskoven."
+            },
+            4: {
+                title: "Heartland Festival",
+                artist: "Indie Bands",
+                date: "2025-06-20",
+                venue: "Egeskov Castle",
+                category: "Indie",
+                price: 1200.00,
+                description: "Intimt festival på et smukt slot med upcoming kunstnere."
+            }
+        };
+
+        function loadEventData(eventId) {
+            if (!eventId) {
+                document.getElementById('editForm').style.display = 'none';
+                document.getElementById('eventInfo').style.display = 'none';
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('editForm').style.display = 'none';
+            document.getElementById('eventInfo').style.display = 'none';
+
+            // Simulate loading delay
+            setTimeout(() => {
+                const event = eventData[eventId];
+                if (event) {
+                    // Populate form fields
+                    document.getElementById('hidden_event_id').value = eventId;
+                    document.getElementById('title').value = event.title;
+                    document.getElementById('artist').value = event.artist;
+                    document.getElementById('date').value = event.date;
+                    document.getElementById('venue').value = event.venue;
+                    document.getElementById('category').value = event.category;
+                    document.getElementById('price').value = event.price;
+                    document.getElementById('description').value = event.description;
+
+                    // Update current event info
+                    document.getElementById('currentEventData').innerHTML = `
+                        <p><strong>Titel:</strong> ${event.title}</p>
+                        <p><strong>Kunstner:</strong> ${event.artist}</p>
+                        <p><strong>Dato:</strong> ${new Date(event.date).toLocaleDateString('da-DK')}</p>
+                        <p><strong>Venue:</strong> ${event.venue}</p>
+                        <p><strong>Kategori:</strong> ${event.category}</p>
+                        <p><strong>Pris:</strong> ${event.price} DKK</p>
+                        <p><strong>Beskrivelse:</strong> ${event.description}</p>
+                    `;
+
+                    // Show forms
+                    document.getElementById('editForm').style.display = 'block';
+                    document.getElementById('eventInfo').style.display = 'block';
+                }
+                document.getElementById('loading').style.display = 'none';
+            }, 500);
+        }
+
+        function resetForm() {
+            const eventId = document.getElementById('event_id').value;
+            if (eventId) {
+                loadEventData(eventId);
+            }
+        }
+
+        // Handle dropdown change
+        document.getElementById('event_id').addEventListener('change', function() {
+            loadEventData(this.value);
+        });
+
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(msg => {
+                msg.style.animation = 'fadeOut 0.5s ease forwards';
+                setTimeout(() => msg.remove(), 500);
+            });
+        }, 5000);
+
+        // Add fade out animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

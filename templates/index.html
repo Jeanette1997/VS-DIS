@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MusicEvents - Musik Event Billetter</title>
+    <title>MusicEvents - Music event tickets</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #3d8241 0%, #173b34 100%);
+            background: linear-gradient(135deg,rgb(45, 99, 208) 0%,rgb(4, 76, 144) 100%);
             min-height: 100vh;
             color: white;
             padding: 20px;
@@ -265,16 +265,23 @@
 </head>
 <body>
     <!-- Top buttons -->
+        {% if currentUser %}
     <div class="top-buttons">
-        <a href="/login" class="top-btn login-btn">🔐 Login</a>
-        <a href="/newuser" class="top-btn newuser-btn">👤 Add User</a>
+        <a href="/" class="top-btn login-btn">Log out</a>
+        <a href="/editEvents" class="top-btn newuser-btn">Manage events</a>
+    </div>    
+        {% else %}
+    <div class="top-buttons">
+        <a href="/login" class="top-btn login-btn">Login</a>
+        <a href="/newuser" class="top-btn newuser-btn">Sign up</a>
     </div>
+        {% endif %}
 
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🎵 MusicEvents</h1>
-            <p>Find dine favoritkonkurrence i Danmark</p>
+            <h1>MOV3</h1>
+            <p>All your favorite artist in Denmark!</p>
         </div>
 
         <!-- Søgebox -->
@@ -283,11 +290,11 @@
                 <input type="text" 
                        name="search" 
                        class="search-input" 
-                       placeholder="Søg efter kunstner, event, venue eller kategori..." 
+                       placeholder="search by artist, venue or genre..." 
                        value="{% if query %}{{ query }}{% endif %}">
-                <button type="submit" class="search-btn">🔍 Søg</button>
+                <button type="submit" class="search-btn">Search</button>
                 {% if query %}
-                <a href="/" class="clear-btn">✕ Ryd</a>
+                <a href="/" class="clear-btn">X</a>
                 {% endif %}
             </form>
         </div>
@@ -305,7 +312,7 @@
             {% for event in events %}
             <div class="event-card">
                 <div class="event-title">{{ event.title }}</div>
-                <div class="event-artist">{{ event.artist }}</div>
+                <div class="event-artist">{{ event.artist_name }}</div>
                 
                 <div class="event-details">
                     <div>📅 {{ event.date | format_date }}</div>
@@ -321,14 +328,14 @@
         </div>
         {% else %}
         <div class="no-results">
-            <h2>😔 Ingen events fundet</h2>
-            <p>Prøv at søge efter noget andet eller <a href="/" style="color: #ffd700;">se alle events</a></p>
+            <h2>No events has been found</h2>
+            <p>Try to search for something else or <a href="/" style="color: #ffd700;">See all events!</a></p>
         </div>
         {% endif %}
 
         <!-- Footer -->
         <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); opacity: 0.7;">
-            <p>&copy; 2025 MusicEvents | Lavet med Flask og Python</p>
+            <p>&copy; 2025 MOV3 | Made with Flask and Python</p>
         </div>
     </div>
 

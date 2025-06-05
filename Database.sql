@@ -8,7 +8,8 @@ CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    phone_nr TEXT
+    phone_nr TEXT,
+    password TEXT NOT NULL
 );
 
 CREATE TABLE events (
@@ -28,12 +29,35 @@ CREATE TABLE tickets (
     buy_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (name, email, phone_nr)
-VALUES ('Alice', 'alice@mail.com', '12345678');
+INSERT INTO users (name, email, phone_nr, password)
+VALUES 
+('Alice', 'alice@mail.com', '12345678', 'password123'),
+('Test', 'a','123','a');
+     
+INSERT INTO tickets (user_id, event_id, quantity, buy_date)
+VALUES (1, 1, 2, '2025-06-01 10:00');
 
 INSERT INTO events (artist_name, genre, venue, date, price)
 VALUES 
 ('Tobias Rahim', 'Pop', 'KB Hallen', '2025-06-20 20:00', 300),
-('Dua Lipa', 'Pop', 'Royal Arena', '2025-06-21 21:00', 450);
+('Dua Lipa', 'Pop', 'Royal Arena', '2025-06-21 21:00', 450),
+('The Weeknd', 'R&B', 'Parken Stadium', '2025-06-22 19:00', 600),
+('Metallica', 'Rock', 'Telia Parken', '2025-06-23 18:00', 700),
+('Adele', 'Pop', 'Copenhagen Opera House', '2025-06-24 20:00', 800),
+('Billie Eilish', 'Pop', 'Tivoli Concert Hall', '2025-06-25 19:30', 500),
+('Ed Sheeran', 'Pop', 'Royal Arena', '2025-06-26 20:00', 550),
+('Coldplay', 'Rock', 'Parken Stadium', '2025-06-27 21:00', 650),
+('Beyoncé', 'R&B', 'Copenhagen Opera House', '2025-06-28 20:00', 900),
+('Drake', 'Hip-Hop', 'Telia Parken', '2025-06-29 19:00', 700),
+('Taylor Swift', 'Pop', 'Royal Arena', '2025-06-30 20:00', 750),
+('Medina', 'Pop', 'KB Hallen', '2025-07-01 20:00', 400),
+('Rammstein', 'Metal', 'Parken Stadium', '2025-07-02 19:00', 800),
+('Imagine Dragons', 'Rock', 'Copenhagen Opera House', '2025-07-03 20:00', 600),
+('Post Malone', 'Hip-Hop', 'Tivoli Concert Hall', '2025-07-04 21:00', 500),
+('Simon Kvamm', 'Pop', 'KB Hallen', '2025-07-05 20:00', 350),
+('Hozier', 'Indie', 'Royal Arena', '2025-07-06 19:30', 400),
+('Lars Lilholt Band', 'Folk', 'Telia Parken', '2025-07-07 20:00', 300),
+('MØ', 'Pop', 'Copenhagen Opera House', '2025-07-08 21:00', 450),
+('Kashmir', 'Rock', 'Parken Stadium', '2025-07-09 19:00', 500);
 
 select * from events;

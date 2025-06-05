@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tilføj Bruger - MusicEvents</title>
+    <title>add user - MusicEvents</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #3d8241 0%, #173b34 100%);
+            background: linear-gradient(135deg,rgb(45, 99, 208) 0%,rgb(4, 76, 144) 100%);
             min-height: 100vh;
             color: white;
             padding: 20px;
@@ -215,13 +215,13 @@
 </head>
 <body>
     <!-- Back button -->
-    <a href="/" class="back-btn">← Tilbage til forsiden</a>
+    <a href="/" class="back-btn">← Back to frontpage</a>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>👤 Tilføj Ny Bruger</h1>
-            <p>Udfyld formularen for at oprette en ny bruger</p>
+            <h1>Add new user</h1>
+            <p>Fill out the formular to add user</p>
         </div>
 
         <!-- Success/Error messages -->
@@ -234,14 +234,14 @@
         <!-- Form info -->
         <div class="form-info">
             <h3>ℹ️ Information</h3>
-            <p>Alle felter markeret med * er obligatoriske. Din information vil blive behandlet sikkert og kun bruges til at oprette din brugerprofil.</p>
+            <p> * are obligatory</p>
         </div>
 
         <!-- Form container -->
         <div class="form-container">
             <form method="POST" action="/newuser">
                 <div class="form-group">
-                    <label for="name" class="form-label required">Fulde navn</label>
+                    <label for="name" class="form-label required">Full name</label>
                     <input type="text" 
                            id="name" 
                            name="name" 
@@ -252,7 +252,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email" class="form-label required">Email adresse</label>
+                    <label for="email" class="form-label required">Email adress</label>
                     <input type="email" 
                            id="email" 
                            name="email" 
@@ -263,13 +263,24 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone" class="form-label required">Telefonnummer</label>
+                    <label for="phone" class="form-label required">phone number</label>
                     <input type="tel" 
                            id="phone" 
                            name="phone" 
                            class="form-input" 
                            placeholder="+45 12 34 56 78"
                            value="{% if form_data %}{{ form_data.phone }}{% endif %}"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label required">password</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           class="form-input" 
+                           placeholder="*******"
+                           value="{% if form_data %}{{ form_data.password }}{% endif %}"
                            required>
                 </div>
 
@@ -282,7 +293,7 @@
         <!-- Info section -->
         <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
             <p style="opacity: 0.8; font-size: 0.9rem;">
-                Har du allerede en konto? <a href="/login" style="color: #ffd700;">Log ind her</a>
+                Do you alaready have an account <a href="/login" style="color: #ffd700;">Log in</a>
             </p>
         </div>
     </div>
@@ -323,7 +334,7 @@
             // Form submission
             form.addEventListener('submit', function(e) {
                 const submitBtn = document.querySelector('.submit-btn');
-                submitBtn.textContent = '⏳ Opretter bruger...';
+                submitBtn.textContent = '⏳ Creating user...';
                 submitBtn.disabled = true;
             });
         });
