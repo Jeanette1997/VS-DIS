@@ -19,6 +19,7 @@ CREATE TABLE events (
     venue TEXT,
     date TIMESTAMP,
     price INT
+    images VARCHAR(255),
 );
 
 CREATE TABLE tickets (
@@ -59,4 +60,9 @@ VALUES
 (19,'Lars Lilholt Band', 'Folk', 'Telia Parken', '2025-07-07 20:00', 300),
 (20,'Kashmir', 'Rock', 'Parken Stadium', '2025-07-09 19:00', 500);
 
+UPDATE events SET images = 'Tobias Rahim.png' WHERE artist_name = 'Tobias Rahim';
+UPDATE events SET images = 'Dua Lipa.png' WHERE artist_name = 'Dua Lipa';
+
+
 select * from events;
+

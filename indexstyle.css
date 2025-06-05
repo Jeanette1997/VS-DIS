@@ -6,9 +6,9 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1163a5 0%, #0d4b8e 100%);
             min-height: 100vh;
-            color: white;
+            color: rgb(255, 255, 255);
             padding: 20px;
         }
 

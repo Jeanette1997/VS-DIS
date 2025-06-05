@@ -14,6 +14,7 @@
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg,rgb(45, 99, 208) 0%,rgb(4, 76, 144) 100%);
+            background: linear-gradient(135deg,rgb(45, 99, 208) 0%,rgb(4, 76, 144) 100%);
             min-height: 100vh;
             color: white;
             padding: 20px;
@@ -274,12 +275,16 @@
     <div class="top-buttons">
         <a href="/login" class="top-btn login-btn">Login</a>
         <a href="/newuser" class="top-btn newuser-btn">Sign up</a>
+        <a href="/login" class="top-btn login-btn">Login</a>
+        <a href="/newuser" class="top-btn newuser-btn">Sign up</a>
     </div>
         {% endif %}
 
     <div class="container">
         <!-- Header -->
         <div class="header">
+            <h1>MOV3</h1>
+            <p>All your favorite artist in Denmark!</p>
             <h1>MOV3</h1>
             <p>All your favorite artist in Denmark!</p>
         </div>
@@ -293,7 +298,9 @@
                        placeholder="search by artist, venue or genre..." 
                        value="{% if query %}{{ query }}{% endif %}">
                 <button type="submit" class="search-btn">Search</button>
+                <button type="submit" class="search-btn">Search</button>
                 {% if query %}
+                <a href="/" class="clear-btn">X</a>
                 <a href="/" class="clear-btn">X</a>
                 {% endif %}
             </form>
@@ -330,11 +337,14 @@
         <div class="no-results">
             <h2>No events has been found</h2>
             <p>Try to search for something else or <a href="/" style="color: #ffd700;">See all events!</a></p>
+            <h2>No events has been found</h2>
+            <p>Try to search for something else or <a href="/" style="color: #ffd700;">See all events!</a></p>
         </div>
         {% endif %}
 
         <!-- Footer -->
         <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); opacity: 0.7;">
+            <p>&copy; 2025 MOV3 | Made with Flask and Python</p>
             <p>&copy; 2025 MOV3 | Made with Flask and Python</p>
         </div>
     </div>
