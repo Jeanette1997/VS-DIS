@@ -44,6 +44,7 @@ def init_db():
                 venue TEXT NOT NULL,
                 price INTEGER NOT NULL,
                 category TEXT NOT NULL
+                
             )
         ''')
         
