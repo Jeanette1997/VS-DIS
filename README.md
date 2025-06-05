@@ -1,6 +1,5 @@
 # Event Ticketing System: DIS_Prototype
-The DIS_prototype is a web application built with Python and Flask for managing event ticketing. The system allows users to browse events, purchase tickets, and manage their orders. It serves as a prototype for learning Flask development and database integration.
-The database schema supports event management and ticket sales, with a user system that handles customer registration, event browsing, and ticket purchasing.
+This project is a web-based concert ticketing and event management system where users, acting as agents, can view information about venues and the artists scheduled to perform at specific dates and times. The system is built to provide a clear overview of upcoming events, allowing agents to browse through different venues, see event schedules, and view artist profiles.
 
     git repository:  https://github.com/Jeanette1997/VS-DIS.git
 
