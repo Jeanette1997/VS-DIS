@@ -4,276 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MusicEvents - Musik Event Billetter</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #3d8241 0%, #173b34 100%);
-            min-height: 100vh;
-            color: white;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        /* Top buttons */
-        .top-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
-
-        .top-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .top-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .login-btn {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: #ffd700;
-            color: #ffd700;
-        }
-
-        .login-btn:hover {
-            background: rgba(255, 215, 0, 0.3);
-        }
-
-        .add-user-btn {
-            background: rgba(76, 175, 80, 0.2);
-            border-color: #4caf50;
-            color: #4caf50;
-        }
-
-        .add-user-btn:hover {
-            background: rgba(76, 175, 80, 0.3);
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            margin-top: 40px; /* Add space for fixed buttons */
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        /* Søgebox */
-        .search-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .search-form {
-            display: flex;
-            gap: 10px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-btn {
-            padding: 15px 30px;
-            background: #ffd700;
-            color: #333;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .search-btn:hover {
-            background: #ffed4e;
-        }
-
-        .clear-btn {
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .clear-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Besked */
-        .message {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        /* Events grid */
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .event-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            transition: transform 0.3s;
-        }
-
-        .event-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .event-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .event-artist {
-            font-size: 1rem;
-            color: #ffd700;
-            margin-bottom: 10px;
-        }
-
-        .event-details {
-            display: grid;
-            gap: 5px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .event-price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffd700;
-            text-align: right;
-        }
-
-        .event-category {
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-        }
-
-        /* Ingen resultater */
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .no-results h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .no-results p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .search-form {
-                flex-direction: column;
-            }
-
-            .search-input, .search-btn {
-                width: 100%;
-            }
-
-            .top-buttons {
-                position: relative;
-                top: auto;
-                right: auto;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
-
-            .header {
-                margin-top: 20px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
+    
 </head>
 <body>
     <!-- Top buttons -->
     <div class="top-buttons">
-        <a href="/login" class="top-btn login-btn">🔐 Login</a>
+        <a href="/login" class="top-btn login-btn">Login</a>
         <a href="/newuser" class="top-btn newuser-btn">👤 Add User</a>
     </div>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🎵 MusicEvents</h1>
+            <h1>MusicEvents</h1>
             <p>Find dine favoritkonkurrence i Danmark</p>
         </div>
 
@@ -285,7 +29,7 @@
                        class="search-input" 
                        placeholder="Søg efter kunstner, event, venue eller kategori..." 
                        value="{% if query %}{{ query }}{% endif %}">
-                <button type="submit" class="search-btn">🔍 Søg</button>
+                <button type="submit" class="search-btn">Søg</button>
                 {% if query %}
                 <a href="/" class="clear-btn">✕ Ryd</a>
                 {% endif %}
@@ -321,7 +65,7 @@
         </div>
         {% else %}
         <div class="no-results">
-            <h2>😔 Ingen events fundet</h2>
+            <h2>Ingen events fundet</h2>
             <p>Prøv at søge efter noget andet eller <a href="/" style="color: #ffd700;">se alle events</a></p>
         </div>
         {% endif %}
