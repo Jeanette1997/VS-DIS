@@ -10,7 +10,7 @@ The system includes the following main entities:
 - Events: Event details including artist, venue, date, and pricing
 - Tickets: Individual ticket records linked to users and events
 - Artists: Performer information
-- Orders: Purchase tracking and ticket grouping
+
 
 
 ## Requirements:
@@ -123,8 +123,8 @@ This sets the codepage to UTF-8. Use chcp 1252 for Windows-1252 encoding.
 
 # Project Structure
 event-ticketing/
-├── run.py                 # Application entry point
-├── __init__.py           # Flask app configuration
+├── app.py                 # Application entry point
+├── app.py           # Flask app configuration
 ├── requirements.txt      # Python dependencies
 ├── schema.sql           # Database schema
 ├── schema_ins.sql       # Initial data
@@ -139,8 +139,7 @@ event-ticketing/
 2. Open your web browser and navigate to http://localhost:5000
 3. Register as a new user or log in with existing credentials
 4. Browse available events
-5. Order tickets for events you want to attend
-6. View your order history and tickets
+
 
 # Development Notes
 
