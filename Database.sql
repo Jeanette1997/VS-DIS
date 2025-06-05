@@ -18,6 +18,7 @@ CREATE TABLE events (
     venue TEXT,
     date TIMESTAMP,
     price INT
+    images VARCHAR(255),
 );
 
 CREATE TABLE tickets (
@@ -35,6 +36,9 @@ INSERT INTO events (artist_name, genre, venue, date, price)
 VALUES 
 ('Tobias Rahim', 'Pop', 'KB Hallen', '2025-06-20 20:00', 300),
 ('Dua Lipa', 'Pop', 'Royal Arena', '2025-06-21 21:00', 450);
+
+UPDATE events SET images = 'Tobias Rahim.png' WHERE artist_name = 'Tobias Rahim';
+UPDATE events SET images = 'Dua Lipa.png' WHERE artist_name = 'Dua Lipa';
 
 
 select * from events;
