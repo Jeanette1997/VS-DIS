@@ -2,7 +2,6 @@ import sqlite3
 from flask import Flask, render_template, request, g, session, redirect, url_for
 import os
 import queryscript as qs
-import queriesdb as qdb
 import regex as re
 import testDataCreator as tdc
 
@@ -130,14 +129,15 @@ def search_events(query):
 
 @app.route('/editEvents', methods=['GET', 'POST'])
 def edit_events():
-    return render_template('editEvents.html')
+    event_id = request.form.get('event_id')
+
+    return render_template('editEvents.html',currentUser=currentUser,events=get_all_events(),event_id=event_id)
 
 @app.route('/')
 def index():
     """Forside - vis alle events eller søgeresultater"""
     query = request.args.get('search', '').strip()
 
-    
     if query:
         events = search_events(query)
         message = f'Søgeresultater for "{query}" ({len(events)} events fundet)'
@@ -151,6 +151,9 @@ def index():
         return render_template('index.html', events=events, query=query, message=message)
     if currentUser != 'None':
         return render_template('index.html', events=events, query=query, message=message, currentUser=currentUser)
+
+
+#@app.route(f'edit-events?event_id={1}', methods=['GET', 'POST'])
 
 @app.route('/newuser', methods=['GET', 'POST'])
 def newuser():

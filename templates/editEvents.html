@@ -321,7 +321,7 @@
         </div>
         
         <div class="content">
-            <a href="/admin/users" class="back-link">← Tilbage til Admin Panel</a>
+            <a href="/" class="back-link">← Back to front page</a>
             
             <!-- Flash Messages -->
             <div class="flash-messages">
@@ -330,40 +330,37 @@
             
             <!-- Event Selection Form -->
             <div class="form-section">
-                <h2 style="margin-bottom: 20px; color: #495057;">Vælg Event at Redigere</h2>
-                <form method="GET" action="/admin/edit-events">
+                <h2 style="margin-bottom: 20px; color: #495057;">Choose event to edit</h2>
+                <form method="GET" action="/editEvents">
                     <div class="form-group">
-                        <label for="event_id">Vælg Event:</label>
+                        <label for="event_id">Choose Event:</label>
                         <select name="event_id" id="event_id" onchange="this.form.submit()">
                             <option value="">-- Vælg et event --</option>
                             <!-- Sample events - replace with actual data -->
-                            <option value="1">Roskilde Festival 2025 - Rock</option>
-                            <option value="2">Copenhagen Jazz Festival - Jazz</option>
-                            <option value="3">Smukfest 2025 - Pop</option>
-                            <option value="4">Heartland Festival - Indie</option>
+                             {% for event in events %}
+                            <option value="{{ event.event_id}}"> {{ event.artist_name }} - {{ event.venue }} - ({{ event.date }})</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </form>
+
+
             </div>
             
             <!-- Event Edit Form (shown when event is selected) -->
             <div class="form-section" id="editForm" style="display: none;">
-                <h2 style="margin-bottom: 20px; color: #495057;">Rediger Event</h2>
-                <form method="POST" action="/admin/edit-events">
+                <h2 style="margin-bottom: 20px; color: #495057;">Edit Event</h2>
+                <form method="POST" action="/editEvents">
                     <input type="hidden" name="event_id" id="hidden_event_id" value="">
                     
-                    <div class="form-group">
-                        <label for="title">Event Titel:</label>
-                        <input type="text" name="title" id="title" required>
-                    </div>
-                    
+
                     <div class="form-group">
                         <label for="artist">Kunstner/Performer:</label>
                         <input type="text" name="artist" id="artist" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="date">Dato:</label>
+                        <label for="date">Date:</label>
                         <input type="date" name="date" id="date" required>
                     </div>
                     
@@ -373,31 +370,10 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="category">Kategori:</label>
-                        <select name="category" id="category" required>
-                            <option value="">-- Vælg kategori --</option>
-                            <option value="Rock">Rock</option>
-                            <option value="Pop">Pop</option>
-                            <option value="Jazz">Jazz</option>
-                            <option value="Electronic">Electronic</option>
-                            <option value="Classical">Classical</option>
-                            <option value="Hip-hop">Hip-hop</option>
-                            <option value="Folk">Folk</option>
-                            <option value="Indie">Indie</option>
-                            <option value="Metal">Metal</option>
-                            <option value="Country">Country</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="price">Pris (DKK):</label>
                         <input type="number" name="price" id="price" min="0" step="0.01" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="description">Beskrivelse:</label>
-                        <textarea name="description" id="description" placeholder="Skriv en beskrivelse af eventet..."></textarea>
-                    </div>
                     
                     <div class="button-group">
                         <button type="submit" name="action" value="update" class="btn btn-primary">
@@ -429,122 +405,5 @@
         </div>
     </div>
 
-    <script>
-        // Sample event data - replace with actual data from your backend
-        const eventData = {
-            1: {
-                title: "Roskilde Festival 2025",
-                artist: "Various Artists",
-                date: "2025-07-01",
-                venue: "Roskilde Festival Ground",
-                category: "Rock",
-                price: 2500.00,
-                description: "Danmarks største musikfestival med internationale og nationale kunstnere."
-            },
-            2: {
-                title: "Copenhagen Jazz Festival",
-                artist: "Jazz Ensemble",
-                date: "2025-07-15",
-                venue: "Tivoli Concert Hall",
-                category: "Jazz",
-                price: 450.00,
-                description: "En uforglemmelig aften med autentisk jazz i hjertet af København."
-            },
-            3: {
-                title: "Smukfest 2025",
-                artist: "Pop Stars",
-                date: "2025-08-12",
-                venue: "Skanderborg",
-                category: "Pop",
-                price: 1800.00,
-                description: "Danmarks smukkeste festival i Bøgeskoven."
-            },
-            4: {
-                title: "Heartland Festival",
-                artist: "Indie Bands",
-                date: "2025-06-20",
-                venue: "Egeskov Castle",
-                category: "Indie",
-                price: 1200.00,
-                description: "Intimt festival på et smukt slot med upcoming kunstnere."
-            }
-        };
-
-        function loadEventData(eventId) {
-            if (!eventId) {
-                document.getElementById('editForm').style.display = 'none';
-                document.getElementById('eventInfo').style.display = 'none';
-                return;
-            }
-
-            // Show loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('editForm').style.display = 'none';
-            document.getElementById('eventInfo').style.display = 'none';
-
-            // Simulate loading delay
-            setTimeout(() => {
-                const event = eventData[eventId];
-                if (event) {
-                    // Populate form fields
-                    document.getElementById('hidden_event_id').value = eventId;
-                    document.getElementById('title').value = event.title;
-                    document.getElementById('artist').value = event.artist;
-                    document.getElementById('date').value = event.date;
-                    document.getElementById('venue').value = event.venue;
-                    document.getElementById('category').value = event.category;
-                    document.getElementById('price').value = event.price;
-                    document.getElementById('description').value = event.description;
-
-                    // Update current event info
-                    document.getElementById('currentEventData').innerHTML = `
-                        <p><strong>Titel:</strong> ${event.title}</p>
-                        <p><strong>Kunstner:</strong> ${event.artist}</p>
-                        <p><strong>Dato:</strong> ${new Date(event.date).toLocaleDateString('da-DK')}</p>
-                        <p><strong>Venue:</strong> ${event.venue}</p>
-                        <p><strong>Kategori:</strong> ${event.category}</p>
-                        <p><strong>Pris:</strong> ${event.price} DKK</p>
-                        <p><strong>Beskrivelse:</strong> ${event.description}</p>
-                    `;
-
-                    // Show forms
-                    document.getElementById('editForm').style.display = 'block';
-                    document.getElementById('eventInfo').style.display = 'block';
-                }
-                document.getElementById('loading').style.display = 'none';
-            }, 500);
-        }
-
-        function resetForm() {
-            const eventId = document.getElementById('event_id').value;
-            if (eventId) {
-                loadEventData(eventId);
-            }
-        }
-
-        // Handle dropdown change
-        document.getElementById('event_id').addEventListener('change', function() {
-            loadEventData(this.value);
-        });
-
-        // Auto-hide flash messages after 5 seconds
-        setTimeout(function() {
-            const flashMessages = document.querySelectorAll('.flash-message');
-            flashMessages.forEach(msg => {
-                msg.style.animation = 'fadeOut 0.5s ease forwards';
-                setTimeout(() => msg.remove(), 500);
-            });
-        }, 5000);
-
-        // Add fade out animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeOut {
-                from { opacity: 1; transform: translateY(0); }
-                to { opacity: 0; transform: translateY(-10px); }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
 </body>
 </html>
