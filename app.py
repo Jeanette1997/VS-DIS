@@ -175,7 +175,7 @@ def newuser():
                 {qs.add_user(name, email, phone, password)}
             ''')
     db.commit()
-    
+    db.close()
     return render_template('succes.html', success='Bruger oprettet!') 
 
 @app.route('/login', methods=['GET', 'POST'])
