@@ -84,7 +84,7 @@ def init_db():
         print("Opretter database...")
         db = sqlite3.connect(DATABASE)
         
-        with open("VS-DIS/Database.sql", "r") as sql_file:
+        with open("Database.sql", "r") as sql_file:
             content = sql_file.read()
         # Opret tabel
         
