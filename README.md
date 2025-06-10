@@ -151,3 +151,5 @@ Database queries should be parameterized to prevent SQL injection.
 ## Future development
 
 Some files in this work has not been used. This is as the time we had, to figure out the settings in the code, was not sufficient with our level. This is a add on, that can be used for further development. 
+
+
