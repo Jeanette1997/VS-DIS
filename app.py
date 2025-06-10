@@ -66,7 +66,7 @@ def verify_user_login(email, password):
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
     
-    if user and user['password'] == password:  # In production, use password hashing!
+    if user and user['password'] == password: 
         return True
     return False
 
