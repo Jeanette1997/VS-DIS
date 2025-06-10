@@ -18,6 +18,11 @@ Run the code below to install the necessary modules.
 
 Make sure to run from VS-DIS-main using Python 3.12 or higher
 
+### Install faker seperately
+For this projekt, faker is needed but it can only be install seperately using:
+
+py -m pip install faker
+
 
 ### Virtual Environment Setup.
 
