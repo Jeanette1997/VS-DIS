@@ -116,6 +116,14 @@ Set environment variables and start flask
     set FLASK_RUN_PORT=5000     (Optional if you want to change port number. Default port is port 5000.)
     flask run
 
+### Or this vertual inviroment in the terminal:
+python3 -m venv venv
+source venv/bin/activate      # macOS/Linux
+venv\Scripts\activate         # Windows
+
+pip install Flask
+
+
 ## Character Encoding (Windows Users)
 If you encounter codepage issues when loading data into PostgreSQL:
 cmdcmd /c chcp 65001
