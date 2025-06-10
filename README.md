@@ -35,7 +35,7 @@ pip install Flask
 # Project Structure
 ├── app.py                  # Application entry point
 ├── queryscript.py          # Calling functions
-├── testDataCreator.py      #Creating testData
+├── testDataCreator.py      # Creating testData
 ├── requirements.txt        # Python dependencies
 ├── Database.sql            # Database schema
 ├── templates/              # HTML templates
