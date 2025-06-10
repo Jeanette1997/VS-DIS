@@ -1,6 +1,6 @@
 # Event Ticketing System: DIS_Prototype
 The DIS_prototype is a web application built with Python and Flask for managing event ticketing. The system allows users to browse events, purchase tickets, and manage their orders. It serves as a prototype for learning Flask development and database integration.
-The database schema supports event management and ticket sales, with a user system that handles customer registration, event browsing, and ticket purchasing.
+The database schema supports event management and ticket sales (not in this version), with a user system that handles customer registration, event browsing, and ticket purchasing (not in this version).
 
     git repository:  https://github.com/Jeanette1997/VS-DIS.git
 
@@ -8,115 +8,19 @@ The database schema supports event management and ticket sales, with a user syst
 The system includes the following main entities:
 - Users: Customer login
 - Events: Event details including artist, venue, date, and pricing
-- Tickets: Individual ticket records linked to users and events
-- Artists: Performer information
-- Orders: Purchase tracking and ticket grouping
-
+- Tickets: Individual ticket records linked to users and events (not yet implemented)
+- Orders: Purchase tracking and ticket grouping (not yet implemented)
 
 ## Requirements:
 Run the code below to install the necessary modules.
 
     pip install -r requirements.txt
 
-#### notes. When solving codepage problems 
-For WINDOWS: Loading data into postgres using psql needs a codepage set. Invoking a cmd shell like this set the codepage: 
-
-    cmd /c chcp 65001   
-
-This makes a subshell with the codepage set to UTF8. 'cmd /c chcp 1252' makes a subshell with the codepage set to 1252. The requirements may have to be run again in the subshell. And you might also have to run the requirements again when invoking a virtual environment (see below). 
-
-## Database setup
-Configure your database connection in __init__.py
-Run the SQL schema files to create the database structure:
-
-schema.sql - Main database schema
-schema_ins.sql - Initial data insertion
-schema_upd.sql - Database updates
-
-PostgreSQL Setup Example:
-
-    psql -d{database_name} -U{username} -W -f schema.sql
-    psql -d{database_name} -U{username} -W -f schema_ins.sql
-    psql -d{database_name} -U{username} -W -f schema_upd.sql 
+Make sure to run from VS-DIS-main using Python 3.12 or higher
 
 
-#### Ubuntu/Linux Note:
-Add host parameter for PostgreSQL:
+### Virtual Environment Setup.
 
-    psql -d{database_name} -U{username} -h127.0.0.1 -W -f schema.sql
-
-
-## Running flask
-### Method 1: The python way
-
-    python3 run.py
-
-### Method 2: The flask way.
-
-    export FLASK_APP=run.py
-    export FLASK_DEBUG=1
-    export FLASK_RUN_PORT=5000
-    flask run
-
-#### notes for Windows users
-For Windows you may have to use the SET command instead of EXPORT. 
-
-    set FLASK_APP=run.py
-    set FLASK_DEBUG=1
-    set FLASK_RUN_PORT=5000
-    flask run
-
-### The flask way with Virtual Environment Setup.
-
-Set up virtual environment as specified in https://flask.palletsprojects.com/en/1.1.x/installation/ (OSX/WINDOWS)
-vitualenv may be bundled with python.
-
-#### OSX: 
-
-    mkdir myproject
-    cd myproject
-
-Create virtual environment in folder
-
-    python3 -m venv .venv
-
-Activate virtual environment in folder
-
-    . .venv/bin/activate
-
-Install flask
-
-    pip install Flask
-
-Set environment variables and start flask
-
-    export FLASK_APP=run.py
-    export FLASK_DEBUG=1           (Replaces export FLASK_ENV=development)
-    export FLASK_RUN_PORT=5000     (Optional if you want to change port number. Default port is port 5000.)
-    flask run
- 
-
-#### WINDOWS:
-
-Create virtual environment in folder
-
-    mkdir myproject
-    cd myproject
-    py -3 -m venv .venv
-
-Activate virtual environment in folder
-
-    .venv\Script\activate
-    pip install Flask
-
-Set environment variables and start flask
-
-    set FLASK_APP=run.py
-    set FLASK_DEBUG=1           (Replaces export FLASK_ENV=development)
-    set FLASK_RUN_PORT=5000     (Optional if you want to change port number. Default port is port 5000.)
-    flask run
-
-### Or this vertual inviroment in the terminal:
 python3 -m venv venv
 source venv/bin/activate      # macOS/Linux
 venv\Scripts\activate         # Windows
@@ -124,31 +28,28 @@ venv\Scripts\activate         # Windows
 pip install Flask
 
 
-## Character Encoding (Windows Users)
-If you encounter codepage issues when loading data into PostgreSQL:
-cmdcmd /c chcp 65001
-This sets the codepage to UTF-8. Use chcp 1252 for Windows-1252 encoding.
+## For Login to MOV3 use:
+Alice@mail.com
+password123
+
 
 # Project Structure
-event-ticketing/
-├── run.py                 # Application entry point
-├── __init__.py           # Flask app configuration
-├── requirements.txt      # Python dependencies
-├── schema.sql           # Database schema
-├── schema_ins.sql       # Initial data
-├── schema_upd.sql       # Schema updates
-├── templates/           # HTML templates
-├── static/             # CSS, JS, images
-└── README.md           # This file
+├── app.py                  # Application entry point
+├── queryscript.py          # Calling functions
+├── testDataCreator.py      # Creating testData
+├── requirements.txt        # Python dependencies
+├── Database.sql            # Database schema
+├── templates/              # HTML templates
+├── ER-Diagram.png          # ER-diagram for the database
+└── README.md               # This file
 
 # Usage
 
 1. Start the application using one of the methods above
 2. Open your web browser and navigate to http://localhost:5000
-3. Register as a new user or log in with existing credentials
+3. Register as a new user or log in with existing credentials as seen above.
 4. Browse available events
-5. Order tickets for events you want to attend
-6. View your order history and tickets
+5. See events you can eddit (Not currently implementet)
 
 # Development Notes
 
@@ -158,6 +59,6 @@ Database queries should be parameterized to prevent SQL injection.
 
 ## Future development
 
-Some files in this work has not been used. This is as the time we had, to figure out the settings in the code, was not sufficient with our code level. This is a add on, that can be used for further development. There are some 'bloat' in the code, as it is not optimized. 
+Some files in this work has not been used. This is as the time we had, to figure out the settings in the code, was not sufficient with our code level. This is a add on, that can be used for further development. There are some 'bloat' in the code, as it is not optimized. In the Sign up function it is possible to make a user, but this new user cannot login on the site. 
 
 
