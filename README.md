@@ -11,17 +11,13 @@ The system includes the following main entities:
 - Tickets: Individual ticket records linked to users and events (not yet implemented)
 - Orders: Purchase tracking and ticket grouping (not yet implemented)
 
-## For Login to MOV3 use:
-Alice@mail.com
-password123
-
-
 ## Requirements:
 Run the code below to install the necessary modules.
 
     pip install -r requirements.txt
 
 Make sure to run from VS-DIS-main using Python 3.12 or higher
+
 
 ### Virtual Environment Setup.
 
@@ -30,6 +26,11 @@ source venv/bin/activate      # macOS/Linux
 venv\Scripts\activate         # Windows
 
 pip install Flask
+
+
+## For Login to MOV3 use:
+Alice@mail.com
+password123
 
 
 # Project Structure
