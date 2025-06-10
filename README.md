@@ -1,5 +1,6 @@
 # Event Ticketing System: DIS_Prototype
-This project is a web-based concert ticketing and event management system where users, acting as agents, can view information about venues and the artists scheduled to perform at specific dates and times. The system is built to provide a clear overview of upcoming events, allowing agents to browse through different venues, see event schedules, and view artist profiles.
+The DIS_prototype is a web application built with Python and Flask for managing event ticketing. The system allows users to browse events, purchase tickets, and manage their orders. It serves as a prototype for learning Flask development and database integration.
+The database schema supports event management and ticket sales, with a user system that handles customer registration, event browsing, and ticket purchasing.
 
     git repository:  https://github.com/Jeanette1997/VS-DIS.git
 
@@ -9,7 +10,7 @@ The system includes the following main entities:
 - Events: Event details including artist, venue, date, and pricing
 - Tickets: Individual ticket records linked to users and events
 - Artists: Performer information
-
+- Orders: Purchase tracking and ticket grouping
 
 
 ## Requirements:
@@ -122,8 +123,8 @@ This sets the codepage to UTF-8. Use chcp 1252 for Windows-1252 encoding.
 
 # Project Structure
 event-ticketing/
-├── app.py                 # Application entry point
-├── app.py           # Flask app configuration
+├── run.py                 # Application entry point
+├── __init__.py           # Flask app configuration
 ├── requirements.txt      # Python dependencies
 ├── schema.sql           # Database schema
 ├── schema_ins.sql       # Initial data
@@ -138,10 +139,15 @@ event-ticketing/
 2. Open your web browser and navigate to http://localhost:5000
 3. Register as a new user or log in with existing credentials
 4. Browse available events
-
+5. Order tickets for events you want to attend
+6. View your order history and tickets
 
 # Development Notes
 
 The Flask framework extends HTML with Jinja2 templating ({{ }} syntax).
 SQL datasets can be displayed using loops and conditional statements in templates.
 Database queries should be parameterized to prevent SQL injection.
+
+## Future development
+
+Some files in this work has not been used. This is as the time we had, to figure out the settings in the code, was not sufficient with our level. This is a add on, that can be used for further development. 
