@@ -18,17 +18,15 @@ Run the code below to install the necessary modules.
 
 Make sure to run from VS-DIS-main using Python 3.12 or higher
 
-### Install faker seperately
-For this projekt, faker is needed but it can only be install seperately using:
+### Install faker seperately if needed
+For this project, faker might have to be installed seperately using:
 
 py -m pip install faker
 
 
 ### Virtual Environment Setup.
 
-python3 -m venv venv
-source venv/bin/activate      # macOS/Linux
-venv\Scripts\activate         # Windows
+python -m venv .venv          
 
 pip install Flask
 
